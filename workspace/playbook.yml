@@ -1,0 +1,54 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+    - name: Update repositories cache and install "openjdk" package
+      ansible.builtin.apt:
+        name: openjdk-17-jre-headless
+        update_cache: yes
+      
+    - name: Allow all access to port 25565
+      community.general.ufw:
+        rule: allow
+        port: '25565'
+
+    - name: Download Server file
+      get_url:
+        url: "https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar"
+        dest: "~/"
+        mode: 0777
+
+    - name: Create Systemd Service
+      copy:
+        dest: /etc/systemd/system/minecraft_server.service
+        content: |
+          [Unit]
+          Description=Minecraft Server Java service
+
+          [Service]
+          WorkingDirectory=/root/
+          ExecStart=/bin/java -Xms128m -Xmx256m -jar myapp.jar
+          User=jvmapps
+          Type=simple
+          Restart=on-failure
+          RestartSec=10
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload minecraft_server.service
+      ansible.builtin.systemd:
+        name: minecraft_server.service
+        state: reloaded
+
+    - name: Start Server
+      shell: nohup java -Xms2048M -Xmx4G -jar server.jar nogui &
+      args:
+        chdir: ~/
+      
+    - name: Create new eula.txt file
+      copy:
+        dest: "~/eula.txt"
+        content: |
+          eula=true
