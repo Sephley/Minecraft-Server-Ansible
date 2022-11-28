@@ -1,1 +1,1 @@
-# Minecraft-Server using Ansible by Sephely
+# Minecraft-Server using Ansible by Sephley
