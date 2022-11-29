@@ -28,8 +28,8 @@
 
           [Service]
           WorkingDirectory=/root/
-          ExecStart=/bin/java -Xms128m -Xmx256m -jar myapp.jar
-          User=jvmapps
+          ExecStart=/bin/java -Xms2048M -Xmx4G -jar server.jar nogui
+          User=root
           Type=simple
           Restart=on-failure
           RestartSec=10
@@ -37,15 +37,11 @@
           [Install]
           WantedBy=multi-user.target
 
-    - name: Reload minecraft_server.service
+    - name: Restart minecraft_server.service, also issue daemon-reload to pick up config changes
       ansible.builtin.systemd:
+        state: restarted
+        daemon_reload: yes
         name: minecraft_server.service
-        state: reloaded
-
-    - name: Start Server
-      shell: nohup java -Xms2048M -Xmx4G -jar server.jar nogui &
-      args:
-        chdir: ~/
       
     - name: Create new eula.txt file
       copy:
