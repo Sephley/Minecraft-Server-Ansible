@@ -1,0 +1,11 @@
+#cloud-config
+# upgrade system
+package_update: true
+package_upgrade: true
+
+# grant us ssh-access via pub-key and give us rights to sudo (for debugging purposes)
+users:
+  - name: sephley
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDsfZEYb81/q6P/5CIqxgaQ9DNyJnGGCrOggSZiSXTFPtYZaec2C+eZY3jtqJt55URZw0LKPnxvtmLcjvGp0+wOwX+Iu9PXSBEdFB3O67l08HPGjWFhYO/m4IoaBkS7F5CeHD5oJ7mpEQVhWsp0hobbh0TN5vhtH+SrzftzHK9BylHBL8BFaVZiJJXq8bwwVT8+T/xocUBQy+JAPasJZhNiXdIOcbxy7dI1BdYNB79PUqhjfhbHTv/tJhU2jwn0Eyj7O2YVbnzoucriM41t27qOuu3znGbaOr58c3xTLgI2+wG5fDLdVBX3fRt3mp21T7jYSOccAnkTYZDpy7d73GVkuz2WdA/rJuyTrsB1LRxBLgj4t0VEvfqgBkRCvgvByysy5bwcsFN1toYFuPS62837DZu2DN69peDwtqI9yXpvRY6Vji5vTJisqqlo387h/yIL2UljqT304rn0obYVDv2aXlJdI9Sfu4/lz0+52kTjAXFC79yQz06yZ6IWnld3dIc= sephley@DESKTOP-6V8UDUJ
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
